@@ -1,0 +1,18 @@
+final List<String> relationships = [
+  'sibling',
+  'grand-parent',
+  'parent',
+  'cousin',
+  'child',
+  'step-child',
+  'colleague',
+  'employee',
+  'employer',
+  'mentor',
+  'nephew',
+  'neice',
+  'aunty',
+  'uncle',
+  'step-sibling',
+  'neighbour',
+];
