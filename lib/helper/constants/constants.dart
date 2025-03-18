@@ -27,9 +27,8 @@ class Constants {
 
   static const pStkPub = "pk_test_c1ff9832479e57844403e068516234c701d625ab";
 
-  static const baseURL = "http://192.168.160.247:5050";
-  // "https://quick-fix-api.vercel.app";
-  //
+  static const baseURL = "https://quick-fix-api.vercel.app";
+  // "http://192.168.253.247:5050";
 
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
   // "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e"; //"pk_test_043683268da92cd71e0d30f9d72396396f2dfb1f";

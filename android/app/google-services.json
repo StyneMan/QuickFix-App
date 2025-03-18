@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:585568951589:android:b5240b9339f1cb12708ecc",
+        "mobilesdk_app_id": "1:585568951589:android:fcb3f52dee441937708ecc",
         "android_client_info": {
-          "package_name": "com.quickfix.android.app"
+          "package_name": "com.quickfixng.app"
         }
       },
       "oauth_client": [],

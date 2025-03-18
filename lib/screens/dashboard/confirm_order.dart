@@ -80,6 +80,9 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
           "items": itemsToJson,
         };
       } else {
+        // "Pickup Only",
+        //                       "Delivery Only",
+        //                       "Pickup & Delivery",
         if (_isExpressOn) {
           payload = {
             "amount": totalAmount,
@@ -90,7 +93,12 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
             "location": _controller.selectedLocation.value,
             "address": _addressController.text,
             "landmark": _landmarkController.text,
-            "delivery_type": _selectedDeliveryType.toLowerCase(),
+            "delivery_type":
+                _selectedDeliveryType.toLowerCase() == "pickup only"
+                    ? "pickup"
+                    : _selectedDeliveryType.toLowerCase() == "delivery only"
+                        ? 'delivery'
+                        : "pickup_delivery",
             "items": itemsToJson,
             "express": _selectedExpress,
           };
@@ -351,7 +359,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                                     ),
                                     CustomTextField(
                                       onChanged: (e) {},
-                                      placeholder: "Address (optional)",
+                                      placeholder: "Address*",
                                       controller: _addressController,
                                       validator: (value) {
                                         // if (value == null || value.isEmpty) {
@@ -413,6 +421,31 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                                             setState(() {
                                               _isExpressOn = e;
                                             });
+
+                                            if (e == false) {
+                                              // Check if selected
+                                              if (_selectedExpress.isNotEmpty) {
+                                                // Remove fee from total amount
+                                                final filt = _controller
+                                                    .expressFeeList.value
+                                                    .firstWhere(
+                                                  (element) =>
+                                                      (element['_id'] ??
+                                                          element['id'] ==
+                                                              _selectedExpress),
+                                                );
+
+                                                // Selected express fee
+                                                final perc = filt['fee'] / 100;
+                                                final mult = perc *
+                                                    _controller.totalPrice;
+                                                setState(() {
+                                                  totalAmount =
+                                                      _controller.totalPrice -
+                                                          mult;
+                                                });
+                                              }
+                                            }
                                           },
                                         ),
                                       ],
@@ -435,8 +468,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                                               // Adjust amount here
                                               final chrage = _controller
                                                   .expressFeeList.value;
-                                              debugPrint(
-                                                  "EXPRESS CHARGE :::: ${chrage}");
+                                              // debugPrint(
+                                              //     "EXPRESS CHARGE :::: ${chrage}");
 
                                               debugPrint(
                                                   "VALUE EXPRE :: $value");
@@ -445,13 +478,13 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                                               final mult =
                                                   perc * _controller.totalPrice;
 
-                                              final deliv =
-                                                  mult + _controller.totalPrice;
+                                              // final deliv =
+                                              //     mult + _controller.totalPrice;
 
-                                              debugPrint(
-                                                  "DELIVE FEE :: $deliv");
+                                              // debugPrint(
+                                              //     "DELIVE FEE :: $deliv");
                                               setState(() {
-                                                deliveryFee = mult;
+                                                // deliveryFee = mult;
                                                 totalAmount =
                                                     _controller.totalPrice +
                                                         mult;
@@ -634,7 +667,13 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              createOrder();
+                              if (_controller.userData.value['wallet']
+                                      ['balance'] <
+                                  totalAmount) {
+                                Constants.toast("Insufficient Pocket Balance");
+                              } else {
+                                createOrder();
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(

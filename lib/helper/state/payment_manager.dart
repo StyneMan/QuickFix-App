@@ -43,30 +43,43 @@ class PaymentController extends GetxController {
           },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) async {
-            final DateTime pageStartTime = DateTime.now();
+            // final DateTime pageStartTime = DateTime.now();
 
-            print("REQUEST URL NOW ==>>> ${request.url}");
+            // print("REQUEST URL NOW ==>>> ${request.url}");
 
             if (request.url.startsWith(
                 'https://quick-fix-api.vercel.app/paystack/callback_success')) {
               // Update User profile here and Exit
-              _controller.setLoading(true);
+
               final prefs = await SharedPreferences.getInstance();
               String _token = prefs.getString("accessToken") ?? "";
 
-              final usrResp =
-                  await APIService().getProfile(accessToken: _token);
-              debugPrint(" USER PROFILE STATECONTO ${usrResp.body}");
-              if (usrResp.statusCode >= 200 && usrResp.statusCode <= 299) {
-                Map<String, dynamic> usrMap = jsonDecode(usrResp.body);
-                debugPrint("USER MAP KELO :: $usrMap");
-                _controller.userData.value = usrMap['user:'];
-                Get.back();
-              } else {
-                Get.back();
-              }
-            }
+              APIService()
+                  .getProfileStreamed(accessToken: _token)
+                  .listen((onData) {
+                debugPrint("LOGODOT USER PROFILE ::: ${onData.body}");
+                if (onData.statusCode >= 200 && onData.statusCode <= 299) {
+                  Map<String, dynamic> map = jsonDecode(onData.body);
+                  _controller.userData.value = map['user'];
+                }
+              });
 
+              // Update transactions here too
+              APIService()
+                  .getTransactionsStreamed(accessToken: _token, page: 1)
+                  .listen((onData) {
+                debugPrint(
+                    "LISTENED TRANSACTIONS DASHBOARD STREAMED ::: ${onData.body}");
+                if (onData.statusCode >= 200 && onData.statusCode <= 299) {
+                  Map<String, dynamic> map = jsonDecode(onData.body);
+                  _controller.transactions.value = map['data'];
+                  _controller.transactionCurrentPage.value =
+                      int.parse("${map['currentPage']}");
+                  _controller.transactionTotalPages.value = map['totalItems'];
+                }
+              });
+              Get.back();
+            }
             return NavigationDecision.navigate;
           }))
       ..loadRequest(

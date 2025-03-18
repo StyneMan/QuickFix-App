@@ -33,6 +33,11 @@ class _SignupFormState extends State<SignupForm> {
   bool _acceptedTerms = false;
   String _countryCode = "NG";
 
+  bool _isNumberOk = false,
+      _isLowercaseOk = false,
+      _isCapitalOk = false,
+      _isSpecialCharOk = false;
+
   _signup() async {
     try {
       _controller.setLoading(true);
@@ -162,9 +167,128 @@ class _SignupFormState extends State<SignupForm> {
               height: 16.0,
             ),
             PasswordField(
-              validator: (val) {},
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please type password';
+                }
+                if (value.toString().length < 8) {
+                  return "Password must be at least 8 characters!";
+                }
+                if (_passwordController.text != value) {
+                  return "Password does not match";
+                }
+                if (!_isNumberOk ||
+                    !_isCapitalOk ||
+                    !_isLowercaseOk ||
+                    !_isSpecialCharOk) {
+                  return 'Weak password. See hint below';
+                }
+                return null;
+              },
               controller: _passwordController,
-              onChanged: (e) => {},
+              onChanged: (value) {
+                if (value.contains(RegExp(r'[0-9]'))) {
+                  setState(() {
+                    _isNumberOk = true;
+                  });
+                } else {
+                  setState(() {
+                    _isNumberOk = false;
+                  });
+                }
+
+                if (value.contains(RegExp(r'[A-Z]'))) {
+                  setState(() {
+                    _isCapitalOk = true;
+                  });
+                } else {
+                  setState(() {
+                    _isCapitalOk = false;
+                  });
+                }
+
+                if (value.contains(RegExp(r'[a-z]'))) {
+                  setState(() {
+                    _isLowercaseOk = true;
+                  });
+                } else {
+                  setState(() {
+                    _isLowercaseOk = false;
+                  });
+                }
+
+                if (value.contains(RegExp(r'[!@#$%^&*(),.?"_:;{}|<>/+=-]'))) {
+                  setState(() {
+                    _isSpecialCharOk = true;
+                  });
+                } else {
+                  setState(() {
+                    _isSpecialCharOk = false;
+                  });
+                }
+              },
+            ),
+            const SizedBox(
+              height: 3.0,
+            ),
+            RichText(
+              text: TextSpan(
+                text: "Use at least one ",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontSize: 12,
+                ),
+                children: [
+                  const TextSpan(
+                    text: "uppercase",
+                    style: TextStyle(
+                      color: Constants.primaryColor,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ", one ",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                  const TextSpan(
+                    text: "lowercase",
+                    style: TextStyle(
+                      color: Constants.primaryColor,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ", one ",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                  const TextSpan(
+                    text: "numeric digit",
+                    style: TextStyle(
+                      color: Constants.primaryColor,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " and one ",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                  const TextSpan(
+                    text: "special character",
+                    style: TextStyle(
+                      color: Constants.primaryColor,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ". ",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 16.0,

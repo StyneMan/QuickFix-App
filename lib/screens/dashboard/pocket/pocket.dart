@@ -150,79 +150,89 @@ class _PocketState extends State<Pocket> {
                               ),
                             ),
                             height: 320,
-                            child: Form(
-                              key: _formKey,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 21.0,
-                                    ),
-                                    CustomMoneyField(
-                                      hintText: "Amount",
-                                      onChanged: (e) {},
-                                      controller: _amountController,
-                                      validator: (value) {
-                                        if (value.toString().isEmpty) {
-                                          return "Amount is required!";
-                                        }
-                                        if (value.toString().contains("-")) {
-                                          return "Negative numbers not allowed";
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      height: 8.0,
-                                    ),
-                                    CustomTextField(
-                                      onChanged: (e) {},
-                                      placeholder: "Email",
-                                      controller: _emailController,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Email address is required';
-                                        }
-                                        if (!RegExp(
-                                                '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
-                                            .hasMatch(value)) {
-                                          return 'Enter a valid email address';
-                                        }
-                                        return null;
-                                      },
-                                      inputType: TextInputType.emailAddress,
-                                    ),
-                                    const SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          initTransaction();
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.all(16.0),
-                                        backgroundColor: Constants.primaryColor,
-                                        foregroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: [
+                                Form(
+                                  key: _formKey,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 21.0,
                                         ),
-                                      ),
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: TextOnest(
-                                          text: "Continue",
-                                          align: TextAlign.center,
-                                          fontSize: 16,
+                                        CustomMoneyField(
+                                          hintText: "Amount",
+                                          onChanged: (e) {},
+                                          controller: _amountController,
+                                          validator: (value) {
+                                            if (value.toString().isEmpty) {
+                                              return "Amount is required!";
+                                            }
+                                            if (value
+                                                .toString()
+                                                .contains("-")) {
+                                              return "Negative numbers not allowed";
+                                            }
+                                            return null;
+                                          },
                                         ),
-                                      ),
+                                        const SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        CustomTextField(
+                                          onChanged: (e) {},
+                                          placeholder: "Email",
+                                          controller: _emailController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Email address is required';
+                                            }
+                                            if (!RegExp(
+                                                    '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+                                                .hasMatch(value)) {
+                                              return 'Enter a valid email address';
+                                            }
+                                            return null;
+                                          },
+                                          inputType: TextInputType.emailAddress,
+                                        ),
+                                        const SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              initTransaction();
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            padding: const EdgeInsets.all(16.0),
+                                            backgroundColor:
+                                                Constants.primaryColor,
+                                            foregroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                          ),
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: TextOnest(
+                                              text: "Continue",
+                                              align: TextAlign.center,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         );

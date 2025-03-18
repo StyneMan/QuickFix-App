@@ -228,6 +228,7 @@ class _DashboardState extends State<Dashboard> {
     return Obx(() {
       return LoadingOverlayPro(
         isLoading: _controller.isLoading.value,
+        progressIndicator: const SizedBox(),
         child: Scaffold(
           body: PersistentTabView(
             context,

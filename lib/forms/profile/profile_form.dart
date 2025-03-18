@@ -27,12 +27,11 @@ class _ProfileFormState extends State<ProfileForm> {
   final _controller = Get.find<StateController>();
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
-  final _ninController = TextEditingController();
   final _dobController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
-  var _selectedGender = "Gender";
+  var _selectedGender = "Select Gender";
 
   String _countryCode = "+234";
   String _dobPlaceholder = "Date of Birth";
@@ -161,7 +160,7 @@ class _ProfileFormState extends State<ProfileForm> {
                 Expanded(
                   child: CustomDropdown(
                     placeholder: _selectedGender,
-                    items: const ['male', 'female'],
+                    items: const ['Select gender', 'male', 'female'],
                     onSelected: (value) {
                       setState(() {
                         _selectedGender = value;
