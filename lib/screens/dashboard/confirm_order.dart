@@ -252,7 +252,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 OrderItem item =
-                                    _controller.itemsList.value[index];
+                                    _controller.itemsSelectedList.value[index];
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -276,7 +276,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                                   const SizedBox(
                                 height: 16.0,
                               ),
-                              itemCount: _controller.itemsList.length,
+                              itemCount: _controller.itemsSelectedList.length,
                             ),
                           ),
                           const SizedBox(height: 16.0),

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:quickfix_app/helper/model/order_item.dart';
 import 'package:quickfix_app/helper/preference/preference_manager.dart';
 import 'package:quickfix_app/service/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +42,8 @@ class StateController extends GetxController {
   var settings = {}.obs;
   RxList socials = [].obs;
   RxList itemsList = [].obs;
+  RxList itemsSelectedList = [].obs;
+
   RxList expressFeeList = [].obs;
 
   RxString selectedLocation = ''.obs;

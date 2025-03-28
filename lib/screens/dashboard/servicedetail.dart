@@ -328,6 +328,13 @@ class _ServiceDetailState extends State<ServiceDetail> {
                   const SizedBox(height: 10.0),
                   ElevatedButton(
                     onPressed: () {
+                      // Filter out here
+                      var lst = _controller.itemsList.value
+                          .where((elem) => elem.quantity > 0)
+                          .toList();
+
+                      debugPrint("FILTERED HERE ::: $lst");
+                      _controller.itemsSelectedList.value = lst;
                       Get.to(
                         ConfirmOrder(data: widget.data),
                         transition: Transition.cupertino,
